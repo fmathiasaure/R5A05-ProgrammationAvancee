@@ -46,4 +46,28 @@ public class Match {
 
     public String getNomArbitre() { return nomArbitre; }
     public void setNomArbitre(String nomArbitre) { this.nomArbitre = nomArbitre; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Match other)) return false;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Match.class.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Match{id=" + id
+                + ", equipe1Id=" + (equipe1 != null ? equipe1.getId() : null)
+                + ", equipe2Id=" + (equipe2 != null ? equipe2.getId() : null)
+                + ", resultatEquipe1=" + resultatEquipe1
+                + ", resultatEquipe2=" + resultatEquipe2
+                + ", adresseStade='" + adresseStade + '\''
+                + ", nomArbitre='" + nomArbitre + '\''
+                + '}';
+    }
 }

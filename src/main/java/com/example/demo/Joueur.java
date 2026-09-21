@@ -55,4 +55,31 @@ public class Joueur {
 
     public Equipe getEquipe() { return equipe; }
     public void setEquipe(Equipe equipe) { this.equipe = equipe; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Joueur other)) return false;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Joueur.class.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Joueur{id=" + id
+                + ", nom='" + nom + '\''
+                + ", prenom='" + prenom + '\''
+                + ", dateNaissance=" + dateNaissance
+                + ", taille=" + taille
+                + ", poids=" + poids
+                + ", poste='" + poste + '\''
+                + ", noteMoyenne=" + noteMoyenne
+                + ", nbMatchsJoues=" + nbMatchsJoues
+                + ", equipeId=" + (equipe != null ? equipe.getId() : null)
+                + '}';
+    }
 }

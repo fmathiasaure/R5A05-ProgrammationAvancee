@@ -34,4 +34,27 @@ public class Equipe {
 
     public Integer getNbDefaites() { return nbDefaites; }
     public void setNbDefaites(Integer nbDefaites) { this.nbDefaites = nbDefaites; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Equipe other)) return false;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Equipe.class.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Equipe{id=" + id
+                + ", nom='" + nom + '\''
+                + ", ville='" + ville + '\''
+                + ", nbVictoires=" + nbVictoires
+                + ", nbEgalites=" + nbEgalites
+                + ", nbDefaites=" + nbDefaites
+                + '}';
+    }
 }
