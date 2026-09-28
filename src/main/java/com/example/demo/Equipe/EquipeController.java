@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @RestController
 public class EquipeController {
@@ -34,5 +36,19 @@ public class EquipeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Equipe creerEquipe(@RequestBody Equipe equipe) {
         return equipeRepository.save(equipe);
+    }
+
+    @DeleteMapping("/equipe")
+    public ResponseEntity<String> supprimerEquipe(@RequestParam Integer id) {
+        if (!equipeRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            equipeRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Impossible de supprimer cette equipe : elle a des matchs enregistres.");
+        }
     }
 }
