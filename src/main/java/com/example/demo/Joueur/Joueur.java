@@ -1,4 +1,6 @@
-package com.example.demo;
+package com.example.demo.Joueur;
+
+import com.example.demo.Equipe.Equipe;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

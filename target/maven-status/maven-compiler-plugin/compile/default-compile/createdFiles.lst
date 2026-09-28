@@ -1,0 +1,6 @@
+com\example\demo\DemoApplication.class
+com\example\demo\Equipe\Equipe.class
+com\example\demo\Matchs\Match.class
+com\example\demo\Joueur\JoueurController.class
+com\example\demo\Joueur\Joueur.class
+com\example\demo\Joueur\JoueurRepository.class

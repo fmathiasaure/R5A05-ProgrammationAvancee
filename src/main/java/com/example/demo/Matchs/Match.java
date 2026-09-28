@@ -1,4 +1,6 @@
-package com.example.demo;
+package com.example.demo.Matchs;
+
+import com.example.demo.Equipe.Equipe;
 
 import jakarta.persistence.*;
 
