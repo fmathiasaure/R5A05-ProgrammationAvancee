@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 public class JoueurController {
@@ -24,5 +28,11 @@ public class JoueurController {
     @GetMapping(value = "/joueur", params = "id")
     public ResponseEntity<Joueur> unJoueur(@RequestParam Integer id) {
         return ResponseEntity.of(joueurRepository.findById(id));
+    }
+
+    @PostMapping("/joueur")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Joueur creerJoueur(@RequestBody Joueur joueur) {
+        return joueurRepository.save(joueur);
     }
 }

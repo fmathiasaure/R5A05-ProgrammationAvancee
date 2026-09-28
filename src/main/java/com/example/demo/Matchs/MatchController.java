@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 public class MatchController {
@@ -16,7 +20,7 @@ public class MatchController {
         this.matchRepository = matchRepository;
     }
 
-    @GetMapping("/joueur")
+    @GetMapping("/match")
     public List<Match> tousLesMatchs() {
         return matchRepository.findAll();
     }
@@ -24,5 +28,11 @@ public class MatchController {
     @GetMapping(value = "/match", params = "id")
     public ResponseEntity<Match> unMatch(@RequestParam Integer id) {
         return ResponseEntity.of(matchRepository.findById(id));
+    }
+
+    @PostMapping("/match")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Match creerMatch(@RequestBody Match match) {
+        return matchRepository.save(match);
     }
 }
