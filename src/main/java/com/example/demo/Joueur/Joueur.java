@@ -23,6 +23,9 @@ public class Joueur {
     private BigDecimal noteMoyenne;
     private Integer nbMatchsJoues;
 
+    @Enumerated(EnumType.STRING)
+    private Statut statut = Statut.ACTIF;
+
     @ManyToOne
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
@@ -55,6 +58,9 @@ public class Joueur {
     public Integer getNbMatchsJoues() { return nbMatchsJoues; }
     public void setNbMatchsJoues(Integer nbMatchsJoues) { this.nbMatchsJoues = nbMatchsJoues; }
 
+    public Statut getStatut() { return statut; }
+    public void setStatut(Statut statut) { this.statut = statut; }
+
     public Equipe getEquipe() { return equipe; }
     public void setEquipe(Equipe equipe) { this.equipe = equipe; }
 
@@ -81,6 +87,7 @@ public class Joueur {
                 + ", poste='" + poste + '\''
                 + ", noteMoyenne=" + noteMoyenne
                 + ", nbMatchsJoues=" + nbMatchsJoues
+                + ", statut=" + statut
                 + ", equipeId=" + (equipe != null ? equipe.getId() : null)
                 + '}';
     }

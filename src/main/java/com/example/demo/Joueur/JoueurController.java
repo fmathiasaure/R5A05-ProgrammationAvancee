@@ -55,6 +55,7 @@ public class JoueurController {
         joueur.setPoste(nouveau.getPoste());
         joueur.setNoteMoyenne(nouveau.getNoteMoyenne());
         joueur.setNbMatchsJoues(nouveau.getNbMatchsJoues());
+        joueur.setStatut(nouveau.getStatut());
         joueur.setEquipe(nouveau.getEquipe());
         return ResponseEntity.ok(joueurRepository.save(joueur));
     }
@@ -89,6 +90,9 @@ public class JoueurController {
         }
         if (modifs.getNbMatchsJoues() != null) {
             joueur.setNbMatchsJoues(modifs.getNbMatchsJoues());
+        }
+        if (modifs.getStatut() != null) {
+            joueur.setStatut(modifs.getStatut());
         }
         if (modifs.getEquipe() != null) {
             joueur.setEquipe(modifs.getEquipe());
