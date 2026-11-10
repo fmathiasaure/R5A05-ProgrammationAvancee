@@ -26,6 +26,9 @@ public class Joueur {
     @Enumerated(EnumType.STRING)
     private Statut statut = Statut.ACTIF;
 
+    /** Suppression logique : le joueur disparait des listes mais reste sur ses feuilles de match. */
+    private Boolean supprime = false;
+
     @ManyToOne
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
@@ -60,6 +63,11 @@ public class Joueur {
 
     public Statut getStatut() { return statut; }
     public void setStatut(Statut statut) { this.statut = statut; }
+
+    public Boolean getSupprime() { return supprime; }
+    public void setSupprime(Boolean supprime) { this.supprime = supprime; }
+
+    public boolean estSupprime() { return Boolean.TRUE.equals(supprime); }
 
     public Equipe getEquipe() { return equipe; }
     public void setEquipe(Equipe equipe) { this.equipe = equipe; }

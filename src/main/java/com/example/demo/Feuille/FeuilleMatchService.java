@@ -62,7 +62,7 @@ public class FeuilleMatchService {
         List<Selection> deja = selectionRepository.findByFeuille(feuille);
         List<Integer> dejaPris = deja.stream().map(s -> s.getJoueur().getId()).toList();
 
-        return joueurRepository.findByEquipeAndStatut(feuille.getEquipe(), Statut.ACTIF).stream()
+        return joueurRepository.findByEquipeAndStatutAndSupprimeFalse(feuille.getEquipe(), Statut.ACTIF).stream()
                 .filter(j -> !dejaPris.contains(j.getId()))
                 .toList();
     }
@@ -77,6 +77,11 @@ public class FeuilleMatchService {
         Equipe equipe = equipeRepository.findById(equipeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Equipe " + equipeId + " introuvable."));
+
+        if (equipe.estSupprime()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "L'equipe " + equipe.getNom() + " a ete supprimee.");
+        }
 
         boolean equipeDuMatch = equipe.getId().equals(match.getEquipe1().getId())
                 || equipe.getId().equals(match.getEquipe2().getId());
@@ -117,6 +122,11 @@ public class FeuilleMatchService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     joueur.getPrenom() + " " + joueur.getNom() + " n'est pas actif (statut "
                             + joueur.getStatut() + ").");
+        }
+
+        if (joueur.estSupprime()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    joueur.getPrenom() + " " + joueur.getNom() + " a ete supprime de l'effectif.");
         }
 
         if (selectionRepository.findByFeuilleAndJoueur(feuille, joueur).isPresent()) {
@@ -193,6 +203,10 @@ public class FeuilleMatchService {
             if (s.getJoueur().getStatut() != Statut.ACTIF) {
                 erreurs.add(s.getJoueur().getPrenom() + " " + s.getJoueur().getNom()
                         + " n'est plus actif (statut " + s.getJoueur().getStatut() + ").");
+            }
+            if (s.getJoueur().estSupprime()) {
+                erreurs.add(s.getJoueur().getPrenom() + " " + s.getJoueur().getNom()
+                        + " a ete supprime de l'effectif.");
             }
         }
 

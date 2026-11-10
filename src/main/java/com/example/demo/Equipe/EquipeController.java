@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.dao.DataIntegrityViolationException;
 
 @RestController
 public class EquipeController {
@@ -25,9 +24,10 @@ public class EquipeController {
         this.equipeRepository = equipeRepository;
     }
 
+    // Les equipes supprimees logiquement n'apparaissent plus dans la liste
     @GetMapping("/equipe")
     public List<Equipe> tousLesEquipes() {
-        return equipeRepository.findAll();
+        return equipeRepository.findBySupprimeFalse();
     }
 
     @GetMapping(value = "/equipe", params = "id")
@@ -83,17 +83,16 @@ public class EquipeController {
         return ResponseEntity.ok(equipeRepository.save(equipe));
     }
 
+    // DELETE : suppression logique. L'equipe reste liee a ses matchs, qui gardent leur historique.
     @DeleteMapping("/equipe")
-    public ResponseEntity<String> supprimerEquipe(@RequestParam Integer id) {
-        if (!equipeRepository.existsById(id)) {
+    public ResponseEntity<Void> supprimerEquipe(@RequestParam Integer id) {
+        Optional<Equipe> trouve = equipeRepository.findById(id);
+        if (trouve.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        try {
-            equipeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Impossible de supprimer cette equipe : elle a des matchs enregistres.");
-        }
+        Equipe equipe = trouve.get();
+        equipe.setSupprime(true);
+        equipeRepository.save(equipe);
+        return ResponseEntity.noContent().build();
     }
 }

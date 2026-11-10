@@ -16,6 +16,9 @@ public class Equipe {
     private Integer nbEgalites;
     private Integer nbDefaites;
 
+    /** Suppression logique : l'equipe disparait des listes mais reste liee a ses matchs. */
+    private Boolean supprime = false;
+
     public Equipe() {}
 
     public Integer getId() { return id; }
@@ -34,6 +37,11 @@ public class Equipe {
 
     public Integer getNbDefaites() { return nbDefaites; }
     public void setNbDefaites(Integer nbDefaites) { this.nbDefaites = nbDefaites; }
+
+    public Boolean getSupprime() { return supprime; }
+    public void setSupprime(Boolean supprime) { this.supprime = supprime; }
+
+    public boolean estSupprime() { return Boolean.TRUE.equals(supprime); }
 
     @Override
     public boolean equals(Object o) {

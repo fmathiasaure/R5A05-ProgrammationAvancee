@@ -24,9 +24,10 @@ public class JoueurController {
         this.joueurRepository = joueurRepository;
     }
 
+    // Les joueurs supprimes logiquement n'apparaissent plus dans la liste
     @GetMapping("/joueur")
     public List<Joueur> tousLesJoueurs() {
-        return joueurRepository.findAll();
+        return joueurRepository.findBySupprimeFalse();
     }
 
     @GetMapping(value = "/joueur", params = "id")
@@ -100,12 +101,16 @@ public class JoueurController {
         return ResponseEntity.ok(joueurRepository.save(joueur));
     }
 
+    // DELETE : suppression logique. Le joueur reste sur les feuilles de match deja remplies.
     @DeleteMapping("/joueur")
     public ResponseEntity<Void> supprimerJoueur(@RequestParam Integer id) {
-        if (!joueurRepository.existsById(id)) {
+        Optional<Joueur> trouve = joueurRepository.findById(id);
+        if (trouve.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        joueurRepository.deleteById(id);
+        Joueur joueur = trouve.get();
+        joueur.setSupprime(true);
+        joueurRepository.save(joueur);
         return ResponseEntity.noContent().build();
     }
 }
