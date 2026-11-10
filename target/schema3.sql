@@ -1,0 +1,16 @@
+create table equipe (id integer not null auto_increment, nb_defaites integer, nb_egalites integer, nb_victoires integer, supprime bit, nom varchar(255), ville varchar(255), primary key (id)) engine=InnoDB;
+create table feuille_match (equipe_id integer not null, id integer not null auto_increment, match_id integer not null, validee bit, primary key (id)) engine=InnoDB;
+create table joueur (date_naissance date, equipe_id integer, id integer not null auto_increment, nb_matchs_joues integer, note_moyenne decimal(38,2), poids decimal(38,2), supprime bit, taille integer, nom varchar(255), poste varchar(255), prenom varchar(255), statut enum ('ACTIF','BLESSE','SUSPENDU'), primary key (id)) engine=InnoDB;
+create table matchs (equipe1_id integer not null, equipe2_id integer not null, id integer not null auto_increment, resultat_equipe1 integer, resultat_equipe2 integer, date_prevue datetime(6), adresse_stade varchar(255), nom_arbitre varchar(255), statut enum ('ANNULE','JOUE','PROGRAMME'), primary key (id)) engine=InnoDB;
+create table selection (feuille_id integer not null, id integer not null auto_increment, joueur_id integer not null, titulaire bit, poste enum ('ATTAQUANT','DEFENSEUR','GARDIEN','MILIEU'), primary key (id)) engine=InnoDB;
+create table utilisateur (id integer not null auto_increment, mot_de_passe varchar(255), nom_utilisateur varchar(255), role enum ('ENTRAINEUR','MODERATEUR'), primary key (id)) engine=InnoDB;
+alter table feuille_match add constraint uq_feuille unique (match_id, equipe_id);
+alter table selection add constraint uq_selection unique (feuille_id, joueur_id);
+alter table utilisateur add constraint UKqaujre9c9usfu26gt36onlblk unique (nom_utilisateur);
+alter table feuille_match add constraint FKnhg0walitfxftun9mahiv0nh1 foreign key (equipe_id) references equipe (id);
+alter table feuille_match add constraint FK4uhf6msyhayni5tvcpx29qg00 foreign key (match_id) references matchs (id);
+alter table joueur add constraint FKhrh0br197oaaly8dmduj07v3c foreign key (equipe_id) references equipe (id);
+alter table matchs add constraint FKh2bnjss3tga4a3cgxb6wc75fs foreign key (equipe1_id) references equipe (id);
+alter table matchs add constraint FK4wwcwxwjcmc4j49yrxkk1xd9l foreign key (equipe2_id) references equipe (id);
+alter table selection add constraint FKhbfddty76037118jlo3w2ygth foreign key (feuille_id) references feuille_match (id);
+alter table selection add constraint FKg60kiemjevfnbq13kx3c5ibo1 foreign key (joueur_id) references joueur (id);

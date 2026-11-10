@@ -3,6 +3,7 @@ package com.example.demo.Matchs;
 import com.example.demo.Equipe.Equipe;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "matchs")
@@ -20,7 +21,14 @@ public class Match {
     @JoinColumn(name = "equipe2_id")
     private Equipe equipe2;
 
+    /** Date et heure du coup d'envoi. */
+    private LocalDateTime datePrevue;
+
+    @Enumerated(EnumType.STRING)
+    private StatutMatch statut = StatutMatch.PROGRAMME;
+
     // 1 = victoire, 2 = egalite, 3 = defaite (resultatEquipe1 + resultatEquipe2 = 4)
+    // Renseignes uniquement quand le match passe a JOUE.
     private Integer resultatEquipe1;
     private Integer resultatEquipe2;
 
@@ -36,6 +44,14 @@ public class Match {
 
     public Equipe getEquipe2() { return equipe2; }
     public void setEquipe2(Equipe equipe2) { this.equipe2 = equipe2; }
+
+    public LocalDateTime getDatePrevue() { return datePrevue; }
+    public void setDatePrevue(LocalDateTime datePrevue) { this.datePrevue = datePrevue; }
+
+    public StatutMatch getStatut() { return statut; }
+    public void setStatut(StatutMatch statut) { this.statut = statut; }
+
+    public boolean estJoue() { return statut == StatutMatch.JOUE; }
 
     public Integer getResultatEquipe1() { return resultatEquipe1; }
     public void setResultatEquipe1(Integer resultatEquipe1) { this.resultatEquipe1 = resultatEquipe1; }
@@ -66,6 +82,8 @@ public class Match {
         return "Match{id=" + id
                 + ", equipe1Id=" + (equipe1 != null ? equipe1.getId() : null)
                 + ", equipe2Id=" + (equipe2 != null ? equipe2.getId() : null)
+                + ", datePrevue=" + datePrevue
+                + ", statut=" + statut
                 + ", resultatEquipe1=" + resultatEquipe1
                 + ", resultatEquipe2=" + resultatEquipe2
                 + ", adresseStade='" + adresseStade + '\''

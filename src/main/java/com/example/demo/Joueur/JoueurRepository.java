@@ -8,5 +8,9 @@ import com.example.demo.Equipe.Equipe;
 
 public interface JoueurRepository extends JpaRepository<Joueur, Integer> {
 
-    List<Joueur> findByEquipeAndStatut(Equipe equipe, Statut statut);
+    /** Les joueurs encore presents : ceux supprimes logiquement sont ecartes. */
+    List<Joueur> findBySupprimeFalse();
+
+    /** Les joueurs selectionnables d'une equipe : actifs et non supprimes. */
+    List<Joueur> findByEquipeAndStatutAndSupprimeFalse(Equipe equipe, Statut statut);
 }
